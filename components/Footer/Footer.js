@@ -17,7 +17,8 @@ function Footer() {
       <div className="mdl-mini-footer__left-section">
         <div className="mdl-logo">Credits</div>
         <ul className="mdl-mini-footer__link-list">
-          <li><Link to="/privacy">React Static Boilerplate</Link></li>
+          <li>caniuse.com</li>
+          <li>React Static Boilerplate</li>
         </ul>
       </div>
     </footer>

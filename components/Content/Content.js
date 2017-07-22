@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import s from './styles.css';
+import { features, getSupport } from 'caniuse-api';
+import { data } from 'browserslist';
 
 class Content extends React.Component {
 
@@ -9,11 +11,11 @@ class Content extends React.Component {
   };
 
   componentDidMount() {
-    window.componentHandler.upgradeElement(this.root);
+    console.log(data);
+    console.log(getSupport("async-functions"));
   }
 
   componentWillUnmount() {
-    window.componentHandler.downgradeElements(this.root);
   }
 
   render() {
@@ -27,4 +29,4 @@ class Content extends React.Component {
   }
 }
 
-export default Layout;
+export default Content;

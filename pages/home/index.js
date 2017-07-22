@@ -10,6 +10,7 @@
 
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
+import Content from '../../components/Content';
 import s from './styles.css';
 
 class HomePage extends React.Component {
@@ -25,7 +26,7 @@ class HomePage extends React.Component {
     return (
       <Layout className={s.content}>
         <h4>Features</h4>
-        
+        <Content />
         <p>
           <br /><br />
         </p>
