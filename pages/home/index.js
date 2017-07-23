@@ -8,7 +8,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import Layout from '../../components/Layout';
 import Content from '../../components/Content';
 import s from './styles.css';
@@ -16,7 +16,6 @@ import s from './styles.css';
 class HomePage extends React.Component {
 
   static propTypes = {
-    articles: PropTypes.array.isRequired,
   };
 
   componentDidMount() {
@@ -25,7 +24,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout className={s.content}>
-        <h4>Features</h4>
+        <h2>Features</h2>
         <Content />
         <p>
           <br /><br />

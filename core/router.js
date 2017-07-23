@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 function decodeParam(val) {
   if (!(typeof val === 'string' || val.length === 0)) {
@@ -72,11 +73,11 @@ function resolve(routes, context) {
         }),
       ]).then(([Page, ...data]) => {
         const props = keys.reduce((result, key, i) => ({ ...result, [key]: data[i] }), {});
-        return <Page route={route} error={context.error} {...props} />;
+        return <MuiThemeProvider><Page route={route} error={context.error} {...props} /></MuiThemeProvider>;
       });
     }
 
-    return route.load().then(Page => <Page route={route} error={context.error} />);
+    return route.load().then(Page => <MuiThemeProvider><Page route={route} error={context.error} /></MuiThemeProvider>);
   }
 
   const error = new Error('Page not found');
