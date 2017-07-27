@@ -13,8 +13,8 @@ import 'whatwg-fetch';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import FastClick from 'fastclick';
 import { Provider } from 'react-redux';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import store from './core/store';
 import router from './core/router';
@@ -40,10 +40,7 @@ function render(location) {
 history.listen(render);
 render(history.getCurrentLocation());
 
-// Eliminates the 300ms delay between a physical tap
-// and the firing of a click event on mobile browsers
-// https://github.com/ftlabs/fastclick
-FastClick.attach(document.body);
+injectTapEventPlugin();
 
 // Enable Hot Module Replacement (HMR)
 if (module.hot) {

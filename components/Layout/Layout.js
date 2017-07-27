@@ -9,6 +9,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 import Header from './Header';
 import Footer from '../Footer';
@@ -27,6 +28,7 @@ class Layout extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div ref={node => (this.root = node)}>
         <Header />

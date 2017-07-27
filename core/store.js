@@ -8,18 +8,70 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
-// Centralized application state
-// For more information visit http://redux.js.org/
-const store = createStore((state, action) => {
-  // TODO: Add action handlers (aka "reduces")
-  switch (action) {
-    case 'COUNT':
-      return { ...state, count: (state.count || 0) + 1 };
+export const ACTION_ADD_BROWSER = 'ADD_BROWSER';
+export const ACTION_UPDATE_BROWSER = 'UPDATE_BROWSER';
+export const ACTION_UPDATE_FEATURE_QUERY = 'UPDATE_FEATURE_QUERY';
+
+export function addBrowserAction() {
+  return {
+    type: ACTION_ADD_BROWSER,
+  };
+}
+export function updateBrowserAction(index, browserDetails) {
+  return {
+    type: ACTION_UPDATE_BROWSER,
+    index,
+    browserDetails,
+  };
+}
+export function updateFeatureQueryAction(featureQuery) {
+  return {
+    type: ACTION_UPDATE_FEATURE_QUERY,
+    featureQuery,
+  };
+}
+
+function usageInputReducer(state = [], action) {
+  let newState;
+  switch (action.type) {
+    case ACTION_ADD_BROWSER:
+      newState = state.slice(0);
+      return newState.push({
+        browserValue: null,
+        userShare: 0,
+      });
+    case ACTION_UPDATE_BROWSER:
+      newState = state.slice(0);
+      newState[action.index] = Object.assign(newState[action.index], {
+        browserValue: action.browserDetails.browserValue,
+        userShare: action.browserDetails.userShare,
+      });
+      return newState;
     default:
       return state;
   }
+}
+
+function featureQueryReducer(state = '', action) {
+  switch (action.type) {
+    case ACTION_UPDATE_FEATURE_QUERY:
+      return action.featureQuery;
+    default:
+      return state;
+  }
+}
+
+const rootReducer = combineReducers({
+  usageInput: usageInputReducer,
+  featureQuery: featureQueryReducer,
 });
+
+// Centralized application state
+// For more information visit http://redux.js.org/
+const store = createStore(
+  rootReducer
+);
 
 export default store;

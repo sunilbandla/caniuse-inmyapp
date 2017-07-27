@@ -1,0 +1,6 @@
+{
+  "name": "BrowserSelectorContainer",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BrowserSelectorContainer.js"
+}
