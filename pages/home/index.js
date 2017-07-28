@@ -24,7 +24,13 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout className={s.content}>
-        <h2>Features</h2>
+        <br />
+        <br />
+        <strong>Get the % of your users that will benefit from a web feature.</strong>
+        <p>
+          Set the user share per browser version and select a feature to get started.
+        </p>
+        <br />
         <Content />
         <p>
           <br /><br />

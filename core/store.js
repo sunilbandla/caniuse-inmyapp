@@ -33,19 +33,26 @@ export function updateFeatureQueryAction(featureQuery) {
   };
 }
 
-function usageInputReducer(state = [], action) {
+function usageInputReducer(state = [{
+  browserValue: null,
+  browserVersion: null,
+  userShare: 0,
+}], action) {
   let newState;
   switch (action.type) {
     case ACTION_ADD_BROWSER:
       newState = state.slice(0);
-      return newState.push({
+      newState.push({
         browserValue: null,
+        browserVersion: null,
         userShare: 0,
       });
+      return newState;
     case ACTION_UPDATE_BROWSER:
       newState = state.slice(0);
       newState[action.index] = Object.assign(newState[action.index], {
         browserValue: action.browserDetails.browserValue,
+        browserVersion: action.browserDetails.browserVersion,
         userShare: action.browserDetails.userShare,
       });
       return newState;

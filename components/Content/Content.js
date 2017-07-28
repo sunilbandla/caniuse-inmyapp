@@ -5,46 +5,73 @@ import s from './styles.css';
 import { features, getSupport } from 'caniuse-api';
 import { data } from 'browserslist';
 import BrowserSelectorContainer from './BrowserSelectorContainer';
-import FlatButton from 'material-ui/FlatButton';
-import { updateFeatureQueryAction } from '../../core/store';
+import { updateFeatureQueryAction, addBrowserAction, updateBrowserAction } from '../../core/store';
+import AutoComplete from 'material-ui/AutoComplete';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class Content extends React.Component {
 
   static propTypes = {
-    className: PropTypes.string,
+    dispatch: PropTypes.func,
+    featureQuery: PropTypes.string,
+    usageInput: PropTypes.array,
   };
 
-  componentDidMount() {
-    console.log(data);
-    console.log(getSupport("async-functions"));
+  componentWillMount() {
+    console.log(getSupport('async-functions'));
   }
 
   componentWillUnmount() {
   }
 
-  clicked = () => {
-    console.log('clicked', event);
-    this.props.dispatch(updateFeatureQueryAction("cow"));
+  handleFeatureQueryChange = (value) => {
+    this.props.dispatch(updateFeatureQueryAction(value));
+  }
+
+  onAddBrowser = () => {
+    this.props.dispatch(addBrowserAction());
+  }
+
+  onUpdateBrowser = (index, value) => {
+    console.log('on update br', index, value);
+    this.props.dispatch(updateBrowserAction(index, value));
+  }
+
+  onGetStats = () => {
+    console.log("on get stats", this.props);
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="">
-        <FlatButton onClick={this.clicked} label="test" />
-        <BrowserSelectorContainer browsers={data} />
+        <BrowserSelectorContainer
+          browsers={data}
+          onAddBrowser={this.onAddBrowser}
+          onAddBrowser={this.onAddBrowser}
+          onUpdateBrowser={this.onUpdateBrowser}
+          usageInput={this.props.usageInput}
+        />
+        <br />
+        <AutoComplete
+          dataSource={features}
+          onUpdateInput={this.handleFeatureQueryChange}
+          floatingLabelText="Type the name of a feature"
+          value={this.props.featureQuery}
+        />
+        <br />
+        <br />
+        <br />
+        <RaisedButton primary onClick={this.onGetStats} label="Get feature support stats" />
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  console.log(state, 'st');
   const { usageInput, featureQuery } = state || {
     usageInput: [],
     featureQuery: '',
   };
-  console.log(usageInput, featureQuery);
   return {
     usageInput,
     featureQuery,
@@ -52,4 +79,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Content);
-// export default Content;
