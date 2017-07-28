@@ -25,7 +25,6 @@ class BrowserSelectorContainer extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const selectors = [];
     for (let i = 0; i < this.props.usageInput.length; i++) {
       selectors.push(<BrowserSelector

@@ -52,7 +52,6 @@ class BrowserSelector extends React.Component {
 
   handleChange = (proxy, index, value) => {
     this.browserUsageInfo.browserValue = value;
-    console.log('changed', this.browserUsageInfo);
     this
       .props
       .onUpdateBrowser(this.browserUsageInfo);
@@ -61,7 +60,6 @@ class BrowserSelector extends React.Component {
 
   handleBrowserVersionChange = (proxy, index, value) => {
     this.browserUsageInfo.browserVersion = value;
-    console.log('changed version', this.browserUsageInfo);
     this
       .props
       .onUpdateBrowser(this.browserUsageInfo);
@@ -69,7 +67,6 @@ class BrowserSelector extends React.Component {
 
   handleUserShareChange = (proxy, value) => {
     this.browserUsageInfo.userShare = value;
-    console.log('changed text', this.browserUsageInfo);
     this
       .props
       .onUpdateBrowser(this.browserUsageInfo);

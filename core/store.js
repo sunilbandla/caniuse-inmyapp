@@ -13,6 +13,8 @@ import { createStore, combineReducers } from 'redux';
 export const ACTION_ADD_BROWSER = 'ADD_BROWSER';
 export const ACTION_UPDATE_BROWSER = 'UPDATE_BROWSER';
 export const ACTION_UPDATE_FEATURE_QUERY = 'UPDATE_FEATURE_QUERY';
+export const ACTION_UPDATE_ERROR_MESSAGE = 'UPDATE_ERROR_MESSAGE';
+export const ACTION_UPDATE_RESULT_STATS = 'UPDATE_RESULT_STATS';
 
 export function addBrowserAction() {
   return {
@@ -30,6 +32,18 @@ export function updateFeatureQueryAction(featureQuery) {
   return {
     type: ACTION_UPDATE_FEATURE_QUERY,
     featureQuery,
+  };
+}
+export function updateErrorMessageAction(errorMessage) {
+  return {
+    type: ACTION_UPDATE_ERROR_MESSAGE,
+    errorMessage,
+  };
+}
+export function updateResultStatsAction(resultStats) {
+  return {
+    type: ACTION_UPDATE_RESULT_STATS,
+    resultStats,
   };
 }
 
@@ -70,9 +84,32 @@ function featureQueryReducer(state = '', action) {
   }
 }
 
+function errorMessageReducer(state = '', action) {
+  switch (action.type) {
+    case ACTION_UPDATE_ERROR_MESSAGE:
+      return action.errorMessage;
+    default:
+      return state;
+  }
+}
+
+function resultStatsReducer(state = {
+  yes: 0,
+  no: 0,
+}, action) {
+  switch (action.type) {
+    case ACTION_UPDATE_RESULT_STATS:
+      return Object.assign({}, action.resultStats);
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   usageInput: usageInputReducer,
   featureQuery: featureQueryReducer,
+  errorMessage: errorMessageReducer,
+  resultStats: resultStatsReducer,
 });
 
 // Centralized application state
