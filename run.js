@@ -14,6 +14,7 @@ const fs = require('fs');
 const del = require('del');
 const ejs = require('ejs');
 const webpack = require('webpack');
+const path = require('path');
 
 // TODO: Update configuration settings
 const config = {
@@ -95,6 +96,43 @@ tasks.set('build', () => {
 // Build and publish the website
 // -----------------------------------------------------------------------------
 tasks.set('publish', () => {
+  const remote = {
+    url: 'https://github.com/sunilbandla/caniuse-inmyapp.git',
+    branch: 'gh-pages',
+  };
+  global.DEBUG = process.argv.includes('--debug') || false;
+  const spawn = require('child_process').spawn;
+  const opts = { cwd: path.resolve(__dirname, './public'), stdio: ['ignore', 'inherit', 'inherit'] };
+  const git = (...args) => new Promise((resolve, reject) => {
+    spawn('git', args, opts).on('close', code => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`git ${args.join(' ')} => ${code} (error)`));
+      }
+    });
+  });
+
+  return Promise.resolve()
+    .then(() => run('clean'))
+    .then(() => git('init', '--quiet'))
+    .then(() => git('config', '--get', 'remote.origin.url')
+      .then(() => git('remote', 'set-url', 'origin', remote.url))
+      .catch(() => git('remote', 'add', 'origin', remote.url))
+    )
+    .then(() => git('ls-remote', '--exit-code', remote.url, 'master')
+      .then(() => Promise.resolve()
+        .then(() => git('fetch', 'origin'))
+        .then(() => git('reset', `origin/${remote.branch}`, '--hard'))
+        .then(() => git('clean', '--force'))
+      )
+      .catch(() => Promise.resolve())
+    )
+    .then(() => run('build'))
+    .then(() => git('add', '.', '--all'))
+    .then(() => git('commit', '--message', new Date().toUTCString())
+      .catch(() => Promise.resolve()))
+    .then(() => git('push', 'origin', `HEAD:${remote.branch}`, '--force', '--set-upstream'));
 });
 
 //
@@ -118,7 +156,7 @@ tasks.set('start', () => {
       const bundle = stats.compilation.chunks.find(x => x.name === 'main').files[0];
       const template = fs.readFileSync('./public/index.ejs', 'utf8');
       const render = ejs.compile(template, { filename: './public/index.ejs' });
-      const output = render({ debug: true, bundle: `/dist/${bundle}`, config });
+      const output = render({ debug: true, bundle: `dist/${bundle}`, config });
       fs.writeFileSync('./public/index.html', output, 'utf8');
 
       // Launch Browsersync after the initial bundling is complete
