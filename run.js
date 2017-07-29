@@ -19,7 +19,6 @@ const webpack = require('webpack');
 const config = {
   title: 'Can I Use - In My App',        // Your website title
   url: 'https://sunilbandla.github.io/caniuse-inmyapp',          // Your website URL
-  project: '',      // Firebase project. See README.md -> How to Deploy
   trackingID: 'UA-XXXXX-Y',                 // Google Analytics Site's ID
 };
 
@@ -96,14 +95,6 @@ tasks.set('build', () => {
 // Build and publish the website
 // -----------------------------------------------------------------------------
 tasks.set('publish', () => {
-  const firebase = require('firebase-tools');
-  return run('build')
-    .then(() => firebase.login({ nonInteractive: false }))
-    .then(() => firebase.deploy({
-      project: config.project,
-      cwd: __dirname,
-    }))
-    .then(() => { setTimeout(() => process.exit()); });
 });
 
 //

@@ -63,7 +63,6 @@ class Content extends React.Component {
     for (let i = 0; i < this.props.usageInput.length; i++) {
       const version = parseFloat(this.props.usageInput[i].browserVersion, 10);
       const share = parseFloat(this.props.usageInput[i].userShare, 10);
-      console.log(this.props.usageInput[i], version, share);
       if (!version || !this.props.usageInput[i].browserValue) {
         continue;
       }

@@ -16,12 +16,9 @@ function Footer() {
     <footer className="footer">
       <Toolbar>
         <ToolbarGroup>
-          <ToolbarTitle text="MIT" />
-        </ToolbarGroup>
-        <ToolbarGroup>
-          <ToolbarTitle text="Credits" />
-            caniuse.com,
-            React Static Boilerplate
+          <a href="https://github.com/sunilbandla/caniuse-inmyapp">
+            <ToolbarTitle text="Github project" />
+          </a>
         </ToolbarGroup>
       </Toolbar>
     </footer>

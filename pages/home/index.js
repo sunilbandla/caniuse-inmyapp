@@ -26,7 +26,7 @@ class HomePage extends React.Component {
       <Layout className={s.content}>
         <br />
         <br />
-        <strong>Get the % of your users that will benefit from a web feature.</strong>
+        <strong>Get the % of your app users that will benefit from a web feature.</strong>
         <p>
           Set the user share per browser version and select a feature to get started.
         </p>
