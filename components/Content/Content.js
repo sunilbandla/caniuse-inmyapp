@@ -12,6 +12,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import { List, ListItem } from 'material-ui/List';
+import { colors } from 'material-ui/styles';
 
 class Content extends React.Component {
 
@@ -24,6 +25,12 @@ class Content extends React.Component {
   };
 
   componentWillMount() {
+    this.supportedStyle = {
+      style: { color: colors.green500 },
+    };
+    this.notSupportedStyle = {
+      style: { color: colors.red500 },
+    };
   }
 
   componentWillUnmount() {
@@ -42,30 +49,38 @@ class Content extends React.Component {
     this.props.dispatch(updateErrorMessageAction(''));
     const featureMatches = find(this.props.featureQuery);
     if (!this.props.featureQuery || Array.isArray(featureMatches)) {
-      this.props.dispatch(updateErrorMessageAction('Invalid feature'));
+      this.props.dispatch(updateErrorMessageAction('Please select a feature from the provided list.'));
       return;
     }
     const sharesTotal = this.props.usageInput.reduce((prev, curr) => prev + parseInt(curr.userShare, 10), 0);
     if (sharesTotal > 100) {
-      this.props.dispatch(updateErrorMessageAction('Invalid user share selected'));
+      this.props.dispatch(updateErrorMessageAction('Please ensure user share total is <= 100.'));
       return;
     }
     const support = getSupport(this.props.featureQuery);
     let yes = 0;
     let no = 0;
     for (let i = 0; i < this.props.usageInput.length; i++) {
+      const version = parseFloat(this.props.usageInput[i].browserVersion, 10);
+      const share = parseFloat(this.props.usageInput[i].userShare, 10);
+      console.log(this.props.usageInput[i], version, share);
+      if (!version || !this.props.usageInput[i].browserValue) {
+        continue;
+      }
       const currBrowserSupport = support[this.props.usageInput[i].browserValue];
-      const version = parseInt(this.props.usageInput[i].browserVersion, 10);
       if (currBrowserSupport && currBrowserSupport.y <= version) {
-        yes += parseInt(this.props.usageInput[i].userShare, 10);
+        yes += share;
       } else {
-        no += parseInt(this.props.usageInput[i].userShare, 10);
+        no += share;
       }
     }
     this.props.dispatch(updateResultStatsAction({
       yes,
       no,
     }));
+    if (yes + no === 0) {
+      this.props.dispatch(updateErrorMessageAction('Please ensure browser & user share values are valid.'));
+    }
   }
 
   handleFeatureQueryChange = (value) => {
@@ -82,8 +97,9 @@ class Content extends React.Component {
     if (this.props.resultStats.yes > 0 || this.props.resultStats.no > 0) {
       displayResults = (
         <List style={{ width: '50%' }}>
-          <ListItem primaryText={`Supported for ${this.props.resultStats.yes}%`} />
-          <ListItem primaryText={`Not supported for ${this.props.resultStats.no}%`} />
+          <h2>Results:</h2>
+          <ListItem {...this.supportedStyle} primaryText={`Supported for ${this.props.resultStats.yes}%`} />
+          <ListItem {...this.notSupportedStyle} primaryText={`Not supported for ${this.props.resultStats.no}%`} />
         </List>
       );
     }
@@ -107,13 +123,13 @@ class Content extends React.Component {
         <br />
         <br />
         <RaisedButton
-          primary onClick={this.onGetStats} label="Get feature support stats"
+          primary onClick={this.onGetStats} label="Get feature support results"
         />
         <Snackbar
           open={openSnack}
           message={this.props.errorMessage}
         />
-        <br />
+        <br /><br />
         {displayResults}
       </div>
     );
