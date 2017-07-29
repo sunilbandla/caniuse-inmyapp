@@ -19,7 +19,7 @@ const webpack = require('webpack');
 const config = {
   title: 'Can I Use - In My App',        // Your website title
   url: 'https://sunilbandla.github.io/caniuse-inmyapp',          // Your website URL
-  trackingID: 'UA-XXXXX-Y',                 // Google Analytics Site's ID
+  trackingID: 'UA-102510004-2',                 // Google Analytics Site's ID
 };
 
 const tasks = new Map(); // The collection of automation tasks ('clean', 'build', 'publish', etc.)
